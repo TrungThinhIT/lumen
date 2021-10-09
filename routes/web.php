@@ -16,3 +16,21 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->group(['namespace' => 'Api'], function () use ($router) {
+    $router->group(['prefix' => 'users'], function () use ($router) {
+        $router->get('', 'UsersController@index');
+        $router->get('/{id}', 'UsersController@show');
+        $router->post('', 'UsersController@store');
+        $router->put('/{id}', 'UsersController@update');
+        $router->delete('/{id}', 'UsersController@destroy');
+    });
+
+    $router->group(['prefix' => 'addresses'], function () use ($router) {
+        $router->get('', 'AddressesController@index');
+        $router->get('/{id}', 'AddressesController@show');
+        $router->post('', 'AddressesController@store');
+        $router->put('/{id}', 'AddressesController@update');
+        $router->delete('/{id}', 'AddressesController@destroy');
+    });
+});
