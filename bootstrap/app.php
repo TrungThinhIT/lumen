@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 (new Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
@@ -19,7 +19,7 @@ date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
 |
 */
 
-$app = new Laravel\Lumen\Application(
+$app = new \Dusterio\LumenPassport\Lumen7Application(
     dirname(__DIR__)
 );
 
@@ -61,6 +61,8 @@ $app->singleton(
 
 $app->configure('app');
 
+$app->configure('auth');
+
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -72,17 +74,13 @@ $app->configure('app');
 |
 */
 
-// $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
-
-$app->register(Prettus\Repository\Providers\LumenRepositoryServiceProvider::class);
-$app->register(\Anik\Form\FormRequestServiceProvider::class);
-$app->register(App\Providers\RepositoryServiceProvider::class);
+$app->routeMiddleware([
+    'client.credentials' => Laravel\Passport\Http\Middleware\CheckClientCredentials::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -95,9 +93,18 @@ $app->register(App\Providers\RepositoryServiceProvider::class);
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+// Package Service Providers...
+$app->register(Prettus\Repository\Providers\LumenRepositoryServiceProvider::class);
+$app->register(Anik\Form\FormRequestServiceProvider::class);
+$app->register(Laravel\Passport\PassportServiceProvider::class);
+$app->register(Dusterio\LumenPassport\PassportServiceProvider::class);
+
+// Application Service Providers...
+$app->register(App\Providers\RepositoryServiceProvider::class);
+$app->register(App\Providers\AppServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\EventServiceProvider::class);
+$app->register(App\Providers\RouteServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -113,7 +120,7 @@ $app->register(App\Providers\RepositoryServiceProvider::class);
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-    require __DIR__.'/../routes/web.php';
+    require __DIR__ . '/../routes/web.php';
 });
 
 return $app;
