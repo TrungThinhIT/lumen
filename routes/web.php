@@ -17,7 +17,15 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
-$router->group(['namespace' => 'Api'], function () use ($router) {
+$router->group(['namespace' => 'Auth'], function () use ($router) {
+    $router->post('/register', 'RegisterController@register');
+});
+
+$router->group(['namespace' => 'Api', 'middleware' => 'auth'], function () use ($router) {
+    $router->group(['prefix' => 'me'], function () use ($router) {
+        $router->get('', 'MeController@show');
+    });
+
     $router->group(['prefix' => 'users'], function () use ($router) {
         $router->get('', 'UsersController@index');
         $router->get('/{id}', 'UsersController@show');

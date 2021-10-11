@@ -27,6 +27,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'email' => 'nullable|email:rfc,dns|max:255|unique:users,email,' . $this->id,
+            'password' => 'nullable|string|max:255',
             'name' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:255',
         ];

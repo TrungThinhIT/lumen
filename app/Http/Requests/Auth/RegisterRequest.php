@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Auth;
 
 use Anik\Form\FormRequest;
 
-class CreateRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,11 +26,11 @@ class CreateRequest extends FormRequest
     protected function rules(): array
     {
         return [
-            'id' => 'required|string|max:15|unique:users',
-            'email' => 'required|email:rfc,dns|max:255|unique:users',
-            'password' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
+            'id' => 'required|string|max:15|min:4|alpha_dash|unique:users',
+            'email' => 'required|string|email:rfc,dns|max:255|unique:users',
+            'password' => 'required|string|min:6',
+            'name' => 'required|string|min:6',
+            'phone' => 'required|string|min:9',
         ];
     }
 }

@@ -7,9 +7,10 @@
     "require": {
         "php": "^7.3|^8.0",
         "anik/form-request": "^4.2",
+        "dusterio/lumen-passport": "^0.3.4",
+        "guzzlehttp/guzzle": "^6.3",
         "laravel/lumen-framework": "^8.0",
-        "prettus/l5-repository": "^2.7",
-        "guzzlehttp/guzzle": "^6.3"
+        "prettus/l5-repository": "^2.7"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
